@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f1eb" />
+  <title>Mi presupuesto · Madrid</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">CONTROL FINANCIERO</p>
+        <h1>Mi presupuesto</h1>
+        <p class="subtitle">Madrid · <span id="monthLabel"></span></p>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeToggle" title="Cambiar tema">☾</button>
+        <button class="primary-btn" id="addExpenseTop">+ Añadir gasto</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="summary-grid">
+        <article class="summary-card income-card">
+          <span>Ingresos</span>
+          <strong id="incomeValue">1.920,50 €</strong>
+          <small>Ingreso mensual neto</small>
+        </article>
+        <article class="summary-card">
+          <span>Gastado</span>
+          <strong id="spentValue">0,00 €</strong>
+          <small id="spentPercent">0% del presupuesto</small>
+        </article>
+        <article class="summary-card">
+          <span>Disponible</span>
+          <strong id="availableValue">1.255,00 €</strong>
+          <small>Hasta tu límite de gasto</small>
+        </article>
+        <article class="summary-card savings-card">
+          <span>Ahorro previsto</span>
+          <strong id="savingsValue">665,50 €</strong>
+          <small id="savingsStatus">Objetivo: 600,00 €</small>
+        </article>
+      </section>
+
+      <section class="goal-card">
+        <div class="goal-copy">
+          <div>
+            <p class="eyebrow">OBJETIVO MENSUAL</p>
+            <h2 id="goalTitle">Ahorra al menos 600 €</h2>
+            <p id="goalMessage">Tu presupuesto actual permite ahorrar 665,50 €.</p>
+          </div>
+          <div class="goal-number"><strong id="goalAmount">665,50 €</strong><span>objetivo estimado</span></div>
+        </div>
+        <div class="goal-track"><div id="goalProgress" class="goal-progress"></div></div>
+        <div class="goal-meta"><span>0 € gastados</span><span id="goalRight">665,50 € de margen</span></div>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel categories-panel">
+          <div class="panel-header">
+            <div><p class="eyebrow">PRESUPUESTO</p><h2>Mis categorías</h2></div>
+            <button class="text-btn" id="editBudgetBtn">Editar límites</button>
+          </div>
+          <div id="categoryList" class="category-list"></div>
+        </section>
+
+        <section class="panel chart-panel">
+          <div class="panel-header"><div><p class="eyebrow">VISIÓN GENERAL</p><h2>En qué se va mi dinero</h2></div></div>
+          <div class="chart-wrap"><canvas id="categoryChart"></canvas></div>
+        </section>
+      </div>
+
+      <div class="content-grid lower-grid">
+        <section class="panel chart-panel">
+          <div class="panel-header"><div><p class="eyebrow">EVOLUCIÓN</p><h2>Gasto del mes</h2></div></div>
+          <div class="chart-wrap line-chart"><canvas id="dailyChart"></canvas></div>
+        </section>
+
+        <section class="panel expenses-panel">
+          <div class="panel-header">
+            <div><p class="eyebrow">MOVIMIENTOS</p><h2>Últimos gastos</h2></div>
+            <button class="text-btn" id="clearMonthBtn">Borrar mes</button>
+          </div>
+          <div id="expenseList" class="expense-list"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer><span>Los datos se guardan solo en este navegador.</span><span>Mi presupuesto · 2026</span></footer>
+  </div>
+
+  <dialog id="expenseDialog">
+    <form method="dialog" id="expenseForm" class="modal-card">
+      <button type="button" class="close-btn" id="closeExpense">×</button>
+      <p class="eyebrow">NUEVO MOVIMIENTO</p>
+      <h2>Añadir gasto</h2>
+      <label>Categoría<select id="expenseCategory" required></select></label>
+      <label>Importe (€)<input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="0,00" required /></label>
+      <label>Fecha<input id="expenseDate" type="date" required /></label>
+      <label>Descripción <span class="optional">opcional</span><input id="expenseNote" type="text" maxlength="60" placeholder="Ej. Mercadona" /></label>
+      <button class="primary-btn full" type="submit">Guardar gasto</button>
+    </form>
+  </dialog>
+
+  <dialog id="budgetDialog">
+    <form method="dialog" class="modal-card" id="budgetForm">
+      <button type="button" class="close-btn" id="closeBudget">×</button>
+      <p class="eyebrow">CONFIGURACIÓN</p>
+      <h2>Límites mensuales</h2>
+      <div id="budgetInputs" class="budget-inputs"></div>
+      <label>Objetivo mínimo de ahorro (€)<input id="savingsTarget" type="number" min="0" step="10" required /></label>
+      <button class="primary-btn full" type="submit">Guardar límites</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
